@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const slugify = require('slugify')
 const validator = require('validator')
+const User = require('./userModel')
 
 const tourSchema = new mongoose.Schema({
   name:{
@@ -75,6 +76,40 @@ const tourSchema = new mongoose.Schema({
     select:false
   },
 
+  startLocation :{
+    type: {
+      type:String,
+      default: "Point",
+      enum: ["Point"]
+
+    },
+    coordinates : [Number],
+    address: String,
+    description: String
+
+  },
+
+  locations: [
+    {
+      type: {
+        type: String,
+        default: "Point",
+        enum: ["Point"]
+    },
+    coordinates : [Number],
+    address: String,
+    description: String,
+    day: Number
+
+  } ],
+
+  guides: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+  }
+  ],
+
   price: {
     type:Number,
     required:[true, "A tour must have a price"]
@@ -116,10 +151,29 @@ const tourSchema = new mongoose.Schema({
     next();
   })
 
-  tourSchema.post(/^find/, function(docs,next){
+  // tourSchema.pre('save', async function(next) {
 
+  //   const guidesPromises =  this.guides.map(async id => {
+  //    return await User.findById(id)
+
+  //   })
+  //   this.guides = await Promise.all(guidesPromises)
+  //   next();
+  // })
+
+  // tourSchema.post(/^find/, function(docs,next){
+
+  //   next();
+  // });
+
+  tourSchema.pre(/^find/, function(next){
+    this.populate({
+      path: 'guides',
+      select: '-__v -passwordChangedAt'
+
+    })
     next();
-  });
+  })
 
   //aggregation middleware
 
