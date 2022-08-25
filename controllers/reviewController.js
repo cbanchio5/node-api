@@ -5,7 +5,10 @@ const catchAsync = require('./../utils/catchAsync')
 
 
 exports.getAllReviews = catchAsync(async (req, res) => {
-  const reviews = await Review.find().populate()
+  let filter = {}
+
+  if(req.params.tourId) filter = { tour:req.params.tourId };
+  const reviews = await Review.find(filter).populate()
 
   //send response
   res.status(200).json({
