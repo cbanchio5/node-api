@@ -10,15 +10,23 @@ const reviewRouter = require('./../routes/reviewRoutes')
 
 router.use('/:tourId/reviews', reviewRouter)
 
-router.route('/top-5-cheap').get(tourController.aliasTopTours,tourController.getALlTours)
+router.route('/top-5-cheap')
+.get(tourController.aliasTopTours,tourController.getALlTours)
 
-router.route('/tour-stats').get(tourController.getTourStats)
+router.route('/tour-stats')
+.get(tourController.getTourStats)
 
-router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan)
+router.route('/monthly-plan/:year')
+.get(authController.protect, authController.restricTo('admin', 'lead-guide', 'guide'), tourController.getMonthlyPlan)
 
-router.route('/').get(authController.protect, tourController.getALlTours).post(tourController.createTour)
+router.route('/')
+.get(tourController.getALlTours)
+.post(authController.protect, authController.restricTo('admin', 'lead-guide'),tourController.createTour)
 
-router.route('/:id').patch(tourController.updateTour).get(tourController.getTour).delete(authController.protect, authController.restricTo('admin', 'lead-guide'), tourController.deleteTour)
+router.route('/:id')
+.patch(authController.protect, authController.restricTo('admin', 'lead-guide'), tourController.updateTour)
+.get(tourController.getTour)
+.delete(authController.protect, authController.restricTo('admin', 'lead-guide'), tourController.deleteTour)
 
 
 
