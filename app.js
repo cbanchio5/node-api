@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path')
 const rateLimit = require('express-rate-limit')
 const morgan = require('morgan');
 const tourRouter = require('./routes/tourRoutes')
@@ -14,6 +15,9 @@ const hpp = require('hpp')
 
 
 const app = express();
+
+app.set('view engine', 'pug')
+app.set('views', path.join(__dirname, 'views'))
 
 
 
@@ -65,7 +69,8 @@ app.use(hpp({
 
 //Serving static files
 
-app.use(express.static(`${__dirname}/public`))
+// app.use(express.static(`${__dirname}/public`))
+app.use(express.static(path.join(__dirname, 'public')))
 
 //Test Middleware
 app.use((req, res, next) => {
@@ -78,6 +83,13 @@ app.use((req, res, next) => {
 
 
 //Routes
+
+app.get('/', (req, res) => {
+  res.status(200).render('base', {
+    tour: 'The Forest Hiker',
+    user: 'Cesar'
+  })
+})
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
