@@ -1,6 +1,14 @@
 extends base
 include _reviewCard
 
+block append head
+  meta(charset='utf-8' content="font-src 'self' data:; img-src 'self' data:; default-src 'self' http://127.0.0:8000/")
+  script(type="text/javascript" src='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js')
+  link(href='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css' rel='stylesheet')
+  script(src='/js/mapBox.js')
+
+
+
 
 
 mixin overviewBox(label, text, icon)
@@ -65,7 +73,7 @@ block content
           img.picture-box__img(src=`/img/tours/${img}`, alt=`${tour.name} ${i + 1} Tour`, class= `picture-box__img--${i + 1}`)
 
     section.section-map
-      #map
+      #map(data-locations=`${JSON.stringify(tour.locations)}`)
 
     section.section-reviews
       .reviews
