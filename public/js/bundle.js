@@ -11235,7 +11235,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.displayMap = void 0;
 
 var displayMap = function displayMap(locations) {
-  mapboxgl.accessToken = 'API_KEY';
+  mapboxgl.accessToken = '';
   var map = new mapboxgl.Map({
     container: 'map',
     // container ID
@@ -11546,7 +11546,7 @@ var _mapBox = require("./mapBox");
 
 //DOM elemenrs
 var mapbox = document.getElementById('map');
-var form = document.querySelector('.form');
+var form = document.querySelector('.form--login');
 var logOutBtn = document.querySelector('.nav__el--logout'); //Values
 //Delegation
 

@@ -1,4 +1,5 @@
 const Tour = require('../models/tourModel')
+const User = require('../models/userModel')
 const catchAsync = require('../utils/catchAsync')
 const MAPBOX_API = process.env.APIKEY_MAPBOX
 const AppError = require('./../utils/appError')
@@ -48,7 +49,8 @@ res.status(200).set(
 
     tour: tour,
 
-    mapbox_api: MAPBOX_API
+    mapbox_api: MAPBOX_API,
+
 
 });
 })
@@ -59,3 +61,24 @@ exports.getLoginForm = (req, res) => {
     title: 'Log into your Account'
   })
 }
+
+exports.getAccount = (req, res) => {
+  res.status(200).render('account', {
+    title: 'Your account'
+  })
+}
+
+exports.updateUserData = catchAsync(async(req, res, next) => {
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, {
+    name:req.body.name,
+    email: req.body.email
+  }, {
+    new:true,
+    runValidators: true
+  })
+
+  res.status(200).render('account', {
+    title: 'Your account',
+    user: updatedUser
+  })
+})
