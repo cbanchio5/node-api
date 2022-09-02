@@ -1,9 +1,5 @@
-window.addEventListener('load', function() {
-  const locations = JSON.parse(document.getElementById('map').dataset.locations)
-  console.log(locations)
-
-
-  mapboxgl.accessToken = 'pk.eyJ1IjoiY2JhbmNoaW8iLCJhIjoiY2w3ZnoydDhqMDAxZzN1bndmemhnd2sydSJ9.VvOOe7c31vXCFGQVtwrslw';
+export const displayMap = (locations) => {
+  mapboxgl.accessToken = 'API_KEY';
   const map = new mapboxgl.Map({
       container: 'map', // container ID
       style: 'mapbox://styles/cbanchio/cl7g00d96000514tayxblcv5e',
@@ -42,4 +38,4 @@ window.addEventListener('load', function() {
   } )
 
 
-})
+}

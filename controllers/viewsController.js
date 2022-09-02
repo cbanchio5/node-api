@@ -1,6 +1,7 @@
 const Tour = require('../models/tourModel')
 const catchAsync = require('../utils/catchAsync')
 const MAPBOX_API = process.env.APIKEY_MAPBOX
+const AppError = require('./../utils/appError')
 
 exports.getOverview = catchAsync(async(req, res) => {
 
@@ -17,7 +18,7 @@ exports.getOverview = catchAsync(async(req, res) => {
 })
 
 
-exports.getTour = catchAsync(async (req, res) => {
+exports.getTour = catchAsync(async (req, res, next) => {
   //1 Get data for the requested tour
 
   const tour = await Tour.findOne({ slug : req.params.slug }).populate({
@@ -28,6 +29,11 @@ exports.getTour = catchAsync(async (req, res) => {
   //2 Build template
 
   //3 Render template using data
+
+  if(!tour) {
+    return next(new AppError('There is no tour with that name', 404))
+
+  }
 
 
 res.status(200).set(
@@ -46,3 +52,10 @@ res.status(200).set(
 
 });
 })
+
+
+exports.getLoginForm = (req, res) => {
+  res.status(200).render('login', {
+    title: 'Log into your Account'
+  })
+}
