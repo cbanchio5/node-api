@@ -1,5 +1,5 @@
 export const displayMap = (locations) => {
-  mapboxgl.accessToken = '';
+  mapboxgl.accessToken = ' ';
   const map = new mapboxgl.Map({
       container: 'map', // container ID
       style: 'mapbox://styles/cbanchio/cl7g00d96000514tayxblcv5e',
